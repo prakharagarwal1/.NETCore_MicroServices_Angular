@@ -10,7 +10,9 @@ public class ProductsController : ControllerBase
     [
         new(1, "Laptop", 75000),
         new(2, "Keyboard", 2500),
-        new(3, "Mouse", 1200)
+        new(3, "Mouse", 1200),
+         new(4, "Mouse1", 1200),
+               new(5, "Mouse1", 1200)
     ];
 
     [HttpGet]

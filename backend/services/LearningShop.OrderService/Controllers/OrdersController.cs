@@ -13,10 +13,11 @@ public class OrdersController : ControllerBase
         {
             [1001] = new(1001, "Customer A", 77500m, "Pending"),
             [1002] = new(1002, "Customer B", 2500m, "Confirmed"),
-            [1003] = new(1003, "Customer C", 1200m, "Shipped")
+            [1003] = new(1003, "Customer C", 1200m, "Shipped"),
+            [1004] = new(1004, "Customer C", 1200m, "Shipped")
         });
 
-    private static int _nextId = 1003;
+    private static int _nextId = 1004;
 
     // GET: /api/orders
     [HttpGet]

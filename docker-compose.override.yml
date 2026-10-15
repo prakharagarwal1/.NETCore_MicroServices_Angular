@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   products:
+    volumes:
+      - ./backend/services/LearningShop.ProductService:/app/backend/services/LearningShop.ProductService:consistent
     build:
       context: .
       dockerfile: backend/services/LearningShop.ProductService/Dockerfile.dev
@@ -18,17 +20,10 @@ services:
           path: ./backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj
         - action: rebuild
           path: ./backend/services/LearningShop.ProductService/Dockerfile.dev
-        - action: sync
-          path: ./backend/services/LearningShop.ProductService
-          target: /app/backend/services/LearningShop.ProductService
-          ignore:
-            - .env
-            - .env-sample
-            - Dockerfile
-            - Dockerfile.dev
-            - LearningShop.ProductService.csproj
 
   orders:
+    volumes:
+      - ./backend/services/LearningShop.OrderService:/app/backend/services/LearningShop.OrderService:consistent
     build:
       context: .
       dockerfile: backend/services/LearningShop.OrderService/Dockerfile.dev
@@ -45,17 +40,10 @@ services:
           path: ./backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj
         - action: rebuild
           path: ./backend/services/LearningShop.OrderService/Dockerfile.dev
-        - action: sync
-          path: ./backend/services/LearningShop.OrderService
-          target: /app/backend/services/LearningShop.OrderService
-          ignore:
-            - .env
-            - .env-sample
-            - Dockerfile
-            - Dockerfile.dev
-            - LearningShop.OrderService.csproj
 
   gateway:
+    volumes:
+      - ./backend/gateway/LearningShop.Gateway:/app/backend/gateway/LearningShop.Gateway:consistent
     build:
       context: .
       dockerfile: backend/gateway/LearningShop.Gateway/Dockerfile.dev
@@ -72,15 +60,6 @@ services:
           path: ./backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj
         - action: rebuild
           path: ./backend/gateway/LearningShop.Gateway/Dockerfile.dev
-        - action: sync
-          path: ./backend/gateway/LearningShop.Gateway
-          target: /app/backend/gateway/LearningShop.Gateway
-          ignore:
-            - .env
-            - .env-sample
-            - Dockerfile
-            - Dockerfile.dev
-            - LearningShop.Gateway.csproj
 
   ui:
     build:
