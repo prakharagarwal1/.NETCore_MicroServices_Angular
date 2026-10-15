@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+COPY backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj backend/services/LearningShop.OrderService/
+RUN dotnet restore "backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj"
+COPY backend/services/LearningShop.OrderService/ backend/services/LearningShop.OrderService/
+
+WORKDIR /src/backend/services/LearningShop.OrderService
+RUN dotnet build -c Debug
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS runtime
+
+WORKDIR /app
+COPY --from=build /src .
+ENV DOTNET_WATCH_NO_LAUNCHER=1
+ENV ASPNETCORE_URLS=http://0.0.0.0:5102
+EXPOSE 5102
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "/app/backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj"]

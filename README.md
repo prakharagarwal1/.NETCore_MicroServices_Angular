@@ -54,18 +54,18 @@ The Angular dev server is proxied to the gateway via `proxy.conf.json`, so API c
 
 ## Docker Compose
 
-The project ships with a `docker-compose.yml` at the repository root that builds and runs all four services. Each backend service has its own multi-stage `Dockerfile`; the frontend is built with Node and served by Nginx.
+The project ships with a `docker-compose.yml` and development override at the repository root. The override runs the backend services with `dotnet watch` and the Angular development server. Docker Compose Watch syncs source changes into the containers and rebuilds/recreates a service when its project or dependency files change. Use Docker Compose v2.22.0 or later.
 
 ```bash
-docker compose up --build
+docker compose up --build --watch
 ```
 
-After the build completes:
+Open the Angular dev server at http://localhost:4200. Backend source edits are picked up by `dotnet watch`; Angular source edits are picked up by `ng serve`. Changes to a `.csproj`, `package.json`, `package-lock.json`, or a development Dockerfile trigger a rebuild and recreate the affected container. Press Ctrl+C to stop the stack.
 
 | Service            | URL                                        |
 |--------------------|--------------------------------------------|
-| Angular UI         | http://localhost                           |
-| API Gateway         | http://localhost:5100                      |
+| Angular UI         | http://localhost:4200                      |
+| API Gateway        | http://localhost:5100                      |
 | Product Service    | http://localhost:5101                      |
 | Order Service      | http://localhost:5102                      |
 

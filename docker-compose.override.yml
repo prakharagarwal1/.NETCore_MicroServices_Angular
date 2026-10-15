@@ -1,0 +1,119 @@
+version: "3.9"
+
+services:
+  products:
+    build:
+      context: .
+      dockerfile: backend/services/LearningShop.ProductService/Dockerfile.dev
+    entrypoint:
+      - dotnet
+      - watch
+      - run
+      - --no-launch-profile
+      - --project
+      - /app/backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj
+        - action: rebuild
+          path: ./backend/services/LearningShop.ProductService/Dockerfile.dev
+        - action: sync
+          path: ./backend/services/LearningShop.ProductService
+          target: /app/backend/services/LearningShop.ProductService
+          ignore:
+            - .env
+            - .env-sample
+            - Dockerfile
+            - Dockerfile.dev
+            - LearningShop.ProductService.csproj
+
+  orders:
+    build:
+      context: .
+      dockerfile: backend/services/LearningShop.OrderService/Dockerfile.dev
+    entrypoint:
+      - dotnet
+      - watch
+      - run
+      - --no-launch-profile
+      - --project
+      - /app/backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj
+        - action: rebuild
+          path: ./backend/services/LearningShop.OrderService/Dockerfile.dev
+        - action: sync
+          path: ./backend/services/LearningShop.OrderService
+          target: /app/backend/services/LearningShop.OrderService
+          ignore:
+            - .env
+            - .env-sample
+            - Dockerfile
+            - Dockerfile.dev
+            - LearningShop.OrderService.csproj
+
+  gateway:
+    build:
+      context: .
+      dockerfile: backend/gateway/LearningShop.Gateway/Dockerfile.dev
+    entrypoint:
+      - dotnet
+      - watch
+      - run
+      - --no-launch-profile
+      - --project
+      - /app/backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj
+        - action: rebuild
+          path: ./backend/gateway/LearningShop.Gateway/Dockerfile.dev
+        - action: sync
+          path: ./backend/gateway/LearningShop.Gateway
+          target: /app/backend/gateway/LearningShop.Gateway
+          ignore:
+            - .env
+            - .env-sample
+            - Dockerfile
+            - Dockerfile.dev
+            - LearningShop.Gateway.csproj
+
+  ui:
+    build:
+      context: ./frontend/learning-shop-ui
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4200:4200"
+    entrypoint:
+      - node
+      - node_modules/@angular/cli/bin/ng.js
+      - serve
+      - --host
+      - 0.0.0.0
+      - --watch
+      - --proxy-config
+      - proxy.conf.json
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend/learning-shop-ui/package.json
+        - action: rebuild
+          path: ./frontend/learning-shop-ui/package-lock.json
+        - action: rebuild
+          path: ./frontend/learning-shop-ui/Dockerfile.dev
+        - action: sync
+          path: ./frontend/learning-shop-ui
+          target: /app
+          ignore:
+            - .env
+            - .env-sample
+            - .dockerignore
+            - Dockerfile
+            - Dockerfile.dev
+            - node_modules/
+            - package.json
+            - package-lock.json

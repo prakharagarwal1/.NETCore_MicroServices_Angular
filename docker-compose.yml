@@ -5,11 +5,11 @@ name: learningshop
 services:
   products:
     build:
-      context: ..
+      context: .
       dockerfile: backend/services/LearningShop.ProductService/Dockerfile
     container_name: learning-shop-products
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - backend/services/LearningShop.ProductService/.env
     ports:
       - "5101:5101"
     networks:
@@ -17,11 +17,11 @@ services:
 
   orders:
     build:
-      context: ..
+      context: .
       dockerfile: backend/services/LearningShop.OrderService/Dockerfile
     container_name: learning-shop-orders
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - backend/services/LearningShop.OrderService/.env
     ports:
       - "5102:5102"
     networks:
@@ -29,11 +29,11 @@ services:
 
   gateway:
     build:
-      context: ..
+      context: .
       dockerfile: backend/gateway/LearningShop.Gateway/Dockerfile
     container_name: learning-shop-gateway
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - backend/gateway/LearningShop.Gateway/.env
     ports:
       - "5100:5100"
     depends_on:
@@ -44,9 +44,11 @@ services:
 
   ui:
     build:
-      context: ../frontend/learning-shop-ui
+      context: ./frontend/learning-shop-ui
       dockerfile: Dockerfile
     container_name: learning-shop-ui
+    env_file:
+      - ./frontend/learning-shop-ui/.env
     ports:
       - "80:80"
     depends_on:
