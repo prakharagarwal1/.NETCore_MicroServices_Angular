@@ -1,0 +1,115 @@
+<section class="create-form">
+    <h2>Create New Order</h2>
+
+    @if (submitSuccess()) {
+    <p class="success" role="status">
+        {{ submitSuccess() }}
+    </p>
+    }
+
+    @if (submitError()) {
+    <p class="error" role="alert">
+        {{ submitError() }}
+    </p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="createOrder()">
+
+        <div class="form-field">
+            <label for="customerName">Customer Name</label>
+
+            <input id="customerName" type="text" formControlName="customerName" placeholder="Enter customer name" />
+
+            @if (
+            form.controls.customerName.touched &&
+            form.controls.customerName.hasError('required')
+            ) {
+            <p class="validation-error">
+                Customer name is required.
+            </p>
+            }
+
+            @if (
+            form.controls.customerName.touched &&
+            form.controls.customerName.hasError('minlength')
+            ) {
+            <p class="validation-error">
+                Enter at least 2 characters.
+            </p>
+            }
+
+            @if (
+            form.controls.customerName.touched &&
+            form.controls.customerName.hasError('maxlength')
+            ) {
+            <p class="validation-error">
+                Maximum length is 100 characters.
+            </p>
+            }
+        </div>
+
+        <div class="form-field">
+            <label for="total">Order Total (INR)</label>
+
+            <input id="total" type="number" min="1" formControlName="total" placeholder="Enter order total" />
+
+            @if (
+            form.controls.total.touched &&
+            form.controls.total.hasError('min')
+            ) {
+            <p class="validation-error">
+                Order total must be at least ₹1.
+            </p>
+            }
+
+            @if (
+            form.controls.total.touched &&
+            form.controls.total.hasError('max')
+            ) {
+            <p class="validation-error">
+                Order total exceeds the allowed maximum.
+            </p>
+            }
+        </div>
+
+        <button type="submit" [disabled]="submitting()">
+            {{ submitting() ? 'Creating Order...' : 'Create Order' }}
+        </button>
+
+    </form>
+</section>
+
+<hr />
+
+<section class="order-list">
+    <h2>Customer Orders</h2>
+
+    @if (loading()) {
+    <p>Loading orders...</p>
+    }
+
+    @if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+
+    @if (!loading() && !error()) {
+    <div class="orders">
+        @for (order of orders(); track order.id) {
+        <article class="order-card">
+            <h3>Order #{{ order.id }}</h3>
+
+            <p>Customer: {{ order.customerName }}</p>
+
+            <p>
+                Total:
+                {{ order.total | currency:'INR':'symbol':'1.0-2' }}
+            </p>
+
+            <p>Status: <strong>{{ order.status }}</strong></p>
+        </article>
+        } @empty {
+        <p>No orders found.</p>
+        }
+    </div>
+    }
+</section>

@@ -1,0 +1,59 @@
+version: "3.9"
+
+name: learningshop
+
+services:
+  products:
+    build:
+      context: ..
+      dockerfile: backend/services/LearningShop.ProductService/Dockerfile
+    container_name: learning-shop-products
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5101:5101"
+    networks:
+      - shop
+
+  orders:
+    build:
+      context: ..
+      dockerfile: backend/services/LearningShop.OrderService/Dockerfile
+    container_name: learning-shop-orders
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5102:5102"
+    networks:
+      - shop
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: backend/gateway/LearningShop.Gateway/Dockerfile
+    container_name: learning-shop-gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    ports:
+      - "5100:5100"
+    depends_on:
+      - products
+      - orders
+    networks:
+      - shop
+
+  ui:
+    build:
+      context: ../frontend/learning-shop-ui
+      dockerfile: Dockerfile
+    container_name: learning-shop-ui
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+    networks:
+      - shop
+
+networks:
+  shop:
+    driver: bridge

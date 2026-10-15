@@ -1,0 +1,63 @@
+<section class="catalog-header">
+    <div>
+        <h2>Product Catalog</h2>
+        <p>Explore our available products.</p>
+    </div>
+
+    <div class="cart">
+        Cart Items: <strong>{{ cartCount() }}</strong>
+    </div>
+</section>
+
+@if (loading()) {
+<p>Loading products...</p>
+}
+
+@if (error()) {
+<p class="error">{{ error() }}</p>
+}
+
+@if (!loading() && !error()) {
+
+<section class="product-grid">
+
+    @for (product of products(); track product.id) {
+
+    <app-product-card [product]="product" (productAdded)="addToCart($event)" />
+
+    } @empty {
+    <p>No products found.</p>
+    }
+
+</section>
+}
+
+<!-- <h2>Product Catalog</h2>
+
+@if (loading()) {
+<p>Loading products...</p>
+}
+
+@if (error()) {
+<p>{{ error() }}</p>
+}
+
+@if (!loading() && !error()) {
+<div class="grid">
+    @for (product of products(); track product.id) {
+    <article class="card">
+        <h3>{{ product.name }}</h3>
+
+        <p>
+            Product ID: {{ product.id }}
+        </p>
+
+        <p class="price">
+            {{ product.price | currency:'INR':'symbol':'1.0-2' }}
+        </p>
+    </article>
+    } @empty {
+    <p>No products found.</p>
+    }
+</div>
+} -->

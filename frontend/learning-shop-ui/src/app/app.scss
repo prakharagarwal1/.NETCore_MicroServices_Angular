@@ -1,0 +1,32 @@
+.header {
+    padding: 20px 40px;
+    background: #1e293b;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 24px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding-bottom: 5px;
+}
+
+nav a.active {
+    border-bottom: 2px solid #60a5fa;
+}
+
+.content {
+    padding: 30px;
+}

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/backend/" />
+  <Folder Name="/backend/gateway/">
+    <Project Path="backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/backend/services/">
+    <Project Path="backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj" />
+    <Project Path="backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj" />
+  </Folder>
+</Solution>

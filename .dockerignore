@@ -1,0 +1,28 @@
+# Git / IDE
+.git/
+.vscode/
+.idea/
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/project.assets.json
+**/project.nuget.cache
+**/*.nuget.dgspec.json
+**/*.nuget.g.props
+**/*.nuget.g.targets
+
+# Node
+**/node_modules/
+**/.angular/
+npm-debug.log
+
+# Angular dist
+**/dist/
+
+# Test artifacts
+**/coverage/
+**/__screenshots__/
+
+# Environment files that should not be shipped
+**/appsettings.Development.json

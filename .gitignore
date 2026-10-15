@@ -1,0 +1,22 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/.vs/
+**/*.bak
+
+# Node / Angular
+**/node_modules/
+**/.angular/
+**/dist/
+npm-debug.log
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

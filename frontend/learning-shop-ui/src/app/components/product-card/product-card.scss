@@ -1,0 +1,46 @@
+:host {
+    display: block;
+}
+
+.product-card {
+    height: 100%;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background: white;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 16px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+}
+
+h3 {
+    margin-top: 20px;
+    color: #1f2937;
+}
+
+.price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #15803d;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
