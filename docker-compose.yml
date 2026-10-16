@@ -11,7 +11,7 @@ services:
     env_file:
       - backend/services/LearningShop.ProductService/.env
     ports:
-      - "5101:5101"
+      - "5001:5001"
     networks:
       - shop
 
@@ -23,7 +23,7 @@ services:
     env_file:
       - backend/services/LearningShop.OrderService/.env
     ports:
-      - "5102:5102"
+      - "5002:5002"
     networks:
       - shop
 
@@ -35,7 +35,7 @@ services:
     env_file:
       - backend/gateway/LearningShop.Gateway/.env
     ports:
-      - "5100:5100"
+      - "5000:5000"
     depends_on:
       - products
       - orders

@@ -13,6 +13,6 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /src .
 ENV DOTNET_WATCH_NO_LAUNCHER=1
-ENV ASPNETCORE_URLS=http://0.0.0.0:5100
-EXPOSE 5100
+ENV ASPNETCORE_URLS=http://0.0.0.0:5000
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "watch", "run", "--project", "/app/backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj"]

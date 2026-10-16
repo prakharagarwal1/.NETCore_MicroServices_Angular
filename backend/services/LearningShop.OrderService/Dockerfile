@@ -10,5 +10,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
-EXPOSE 5102
+EXPOSE 5002
 ENTRYPOINT ["dotnet", "LearningShop.OrderService.dll"]

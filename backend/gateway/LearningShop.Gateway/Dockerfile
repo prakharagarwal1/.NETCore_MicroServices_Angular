@@ -11,5 +11,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
-EXPOSE 5100
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "LearningShop.Gateway.dll"]

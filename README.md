@@ -7,13 +7,13 @@ A demo e-commerce microservices application built with **.NET 10** and **Angular
 ```
 ┌─────────────┐     ┌──────────────┐     ┌────────────────┐
 │  Angular UI │────▶│  API Gateway │────▶│  ProductService │
-│  (port 80)  │     │  (port 5100) │     │  (port 5101)   │
+│  (port 80)  │     │  (port 5000) │     │  (port 5001)   │
 └─────────────┘     └──────────────┘     └────────────────┘
                               │
                               ▼
                     ┌────────────────┐
                     │  OrderService  │
-                    │  (port 5102)   │
+                    │  (port 5002)   │
                     └────────────────┘
 ```
 
@@ -40,7 +40,7 @@ dotnet run --project backend/services/LearningShop.OrderService
 dotnet run --project backend/gateway/LearningShop.Gateway
 ```
 
-The gateway expects the services on `http://localhost:5101` and `http://localhost:5102` by default (see `backend/gateway/LearningShop.Gateway/appsettings.json`).
+The gateway expects the services on `http://localhost:5001` and `http://localhost:5002` by default (see `backend/gateway/LearningShop.Gateway/appsettings.Development.json`).
 
 ### Frontend
 
@@ -65,11 +65,33 @@ Open the Angular dev server at http://localhost:4200. Backend source edits are p
 | Service            | URL                                        |
 |--------------------|--------------------------------------------|
 | Angular UI         | http://localhost:4200                      |
-| API Gateway        | http://localhost:5100                      |
-| Product Service    | http://localhost:5101                      |
-| Order Service      | http://localhost:5102                      |
+| API Gateway        | http://localhost:5000                      |
+| Product Service    | http://localhost:5001                      |
+| Order Service      | http://localhost:5002                      |
 
-In the containerized setup the gateway uses `appsettings.Docker.json` so it routes to the service containers (`products`, `orders`) instead of localhost.
+In the containerized setup the gateway uses `appsettings.json` so it routes to the service containers (`products`, `orders`) instead of localhost.
+
+## API Documentation (Swagger)
+
+Each service ships with Swagger UI. In development mode, open these URLs:
+
+| Service | Swagger UI | OpenAPI JSON |
+|---------|-----------|--------------|
+| API Gateway | http://localhost:5000/swagger | http://localhost:5000/swagger/v1/swagger.json |
+| Product Service | http://localhost:5001/swagger | http://localhost:5001/swagger/v1/swagger.json |
+| Order Service | http://localhost:5002/swagger | http://localhost:5002/swagger/v1/swagger.json |
+
+### Authentication
+
+The gateway exposes a `POST /api/auth/login` endpoint that returns a JWT token. Hardcoded users:
+
+| Username | Email | Password | Role |
+|----------|-------|----------|------|
+| `admin` | `admin@example.com` | `Admin@123` | Admin |
+| `customer` | `customer@example.com` | `Customer@123` | Customer |
+| `seller` | `seller@example.com` | `Seller@123` | Seller |
+
+Use the returned token as `Authorization: Bearer <token>` on protected routes.
 
 ## Project structure
 
