@@ -1,12 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
 WORKDIR /src
+COPY backend/shared/LearningShop.MessageBus/LearningShop.MessageBus.csproj backend/shared/LearningShop.MessageBus/
 COPY backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj backend/services/LearningShop.ProductService/
 RUN dotnet restore "backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj"
+COPY backend/shared/LearningShop.MessageBus/ backend/shared/LearningShop.MessageBus/
 COPY backend/services/LearningShop.ProductService/ backend/services/LearningShop.ProductService/
+
 WORKDIR /src/backend/services/LearningShop.ProductService
 RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production

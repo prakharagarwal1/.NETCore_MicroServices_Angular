@@ -27,6 +27,18 @@ services:
     networks:
       - shop
 
+  cart:
+    build:
+      context: .
+      dockerfile: backend/services/LearningShop.CartService/Dockerfile
+    container_name: learning-shop-cart
+    env_file:
+      - backend/services/LearningShop.CartService/.env
+    ports:
+      - "5003:5003"
+    networks:
+      - shop
+
   gateway:
     build:
       context: .
@@ -39,6 +51,7 @@ services:
     depends_on:
       - products
       - orders
+      - cart
     networks:
       - shop
 
@@ -56,6 +69,23 @@ services:
     networks:
       - shop
 
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: learning-shop-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - shop
+
 networks:
   shop:
     driver: bridge
+
+volumes:
+  rabbitmq-data:

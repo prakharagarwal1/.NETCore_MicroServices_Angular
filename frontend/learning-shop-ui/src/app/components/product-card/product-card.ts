@@ -17,6 +17,7 @@ export class ProductCard {
 
   // Event sent from the child to the parent
   productAdded = output<Product>();
+  add = output<Product>();
 
   addToCart(): void {
     this.productAdded.emit(this.product());

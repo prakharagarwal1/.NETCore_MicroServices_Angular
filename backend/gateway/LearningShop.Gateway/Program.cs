@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// JWT Authentication
+// JWT Authentication — validated ONCE at the gateway
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -62,8 +62,30 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Gateway-only JWT: validate token, then inject claims as X-User-* headers
+// for downstream services to trust (no per-service JWT validation needed)
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Inject authenticated user claims into downstream request headers
+app.Use((context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true)
+    {
+        var userId = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)
+                         ?? context.User.FindFirst(System.Security.Claims.JwtRegisteredClaimNames.Sub);
+        var email = context.User.FindFirst(System.Security.Claims.JwtRegisteredClaimNames.Email);
+        var role = context.User.FindFirst(System.Security.Claims.ClaimTypes.Role);
+
+        if (userId != null)
+            context.Request.Headers["X-User-Id"] = userId.Value;
+        if (email != null)
+            context.Request.Headers["X-User-Email"] = email.Value;
+        if (role != null)
+            context.Request.Headers["X-User-Role"] = role.Value;
+    }
+    return next(context);
+});
 
 app.MapControllers();
 app.MapReverseProxy();

@@ -1,8 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 WORKDIR /src
+COPY backend/shared/LearningShop.MessageBus/LearningShop.MessageBus.csproj backend/shared/LearningShop.MessageBus/
 COPY backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj backend/services/LearningShop.OrderService/
 RUN dotnet restore "backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj"
+COPY backend/shared/LearningShop.MessageBus/ backend/shared/LearningShop.MessageBus/
 COPY backend/services/LearningShop.OrderService/ backend/services/LearningShop.OrderService/
 
 WORKDIR /src/backend/services/LearningShop.OrderService

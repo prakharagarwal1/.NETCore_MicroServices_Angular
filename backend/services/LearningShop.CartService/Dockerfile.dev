@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+COPY backend/shared/LearningShop.MessageBus/LearningShop.MessageBus.csproj backend/shared/LearningShop.MessageBus/
+COPY backend/services/LearningShop.CartService/LearningShop.CartService.csproj backend/services/LearningShop.CartService/
+RUN dotnet restore "backend/services/LearningShop.CartService/LearningShop.CartService.csproj"
+COPY backend/shared/LearningShop.MessageBus/ backend/shared/LearningShop.MessageBus/
+COPY backend/services/LearningShop.CartService/ backend/services/LearningShop.CartService/
+
+WORKDIR /src/backend/services/LearningShop.CartService
+RUN dotnet build -c Debug
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS runtime
+
+WORKDIR /app
+COPY --from=build /src .
+ENV DOTNET_WATCH_NO_LAUNCHER=1
+ENV ASPNETCORE_URLS=http://0.0.0.0:5003
+EXPOSE 5003
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "/app/backend/services/LearningShop.CartService/LearningShop.CartService.csproj"]

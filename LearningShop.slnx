@@ -4,7 +4,11 @@
     <Project Path="backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj" />
   </Folder>
   <Folder Name="/backend/services/">
+    <Project Path="backend/services/LearningShop.CartService/LearningShop.CartService.csproj" />
     <Project Path="backend/services/LearningShop.OrderService/LearningShop.OrderService.csproj" />
     <Project Path="backend/services/LearningShop.ProductService/LearningShop.ProductService.csproj" />
+  </Folder>
+  <Folder Name="/backend/shared/">
+    <Project Path="backend/shared/LearningShop.MessageBus/LearningShop.MessageBus.csproj" />
   </Folder>
 </Solution>

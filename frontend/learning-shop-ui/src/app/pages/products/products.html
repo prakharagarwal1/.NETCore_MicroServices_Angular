@@ -1,63 +1,49 @@
-<section class="catalog-header">
-    <div>
-        <h2>Product Catalog</h2>
-        <p>Explore our available products.</p>
+<div class="products-page">
+  <header class="page-header">
+    <h1>Products</h1>
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search products..."
+        [formControl]="searchForm.controls.query"
+        (keyup.enter)="onSearch()"
+      />
+      <button type="button" (click)="clearSearch()" *ngIf="searchQuery()">
+        ✕
+      </button>
     </div>
+  </header>
 
-    <div class="cart">
-        Cart Items: <strong>{{ cartCount() }}</strong>
-    </div>
-</section>
+  <nav class="category-filter" *ngIf="categories().length > 0">
+    <button
+      *ngFor="let cat of categories()"
+      class="cat-chip"
+      [class.active]="selectedCategory() === cat"
+      (click)="selectCategory(cat)"
+    >
+      {{ cat }}
+    </button>
+  </nav>
 
-@if (loading()) {
-<p>Loading products...</p>
-}
+  <div *ngIf="loading()" class="loading">Loading products…</div>
 
-@if (error()) {
-<p class="error">{{ error() }}</p>
-}
+  <div *ngIf="error()" class="error">{{ error() }}</div>
 
-@if (!loading() && !error()) {
+  <div *ngIf="!loading() && filteredProducts.length === 0" class="empty">
+    No products match your search.
+  </div>
 
-<section class="product-grid">
+  <div class="product-grid" *ngIf="!loading() && filteredProducts.length > 0">
+    <app-product-card
+      *ngFor="let product of filteredProducts"
+      [product]="product"
+      (productAdded)="addToCart($event)"
+    ></app-product-card>
+  </div>
 
-    @for (product of products(); track product.id) {
-
-    <app-product-card [product]="product" (productAdded)="addToCart($event)" />
-
-    } @empty {
-    <p>No products found.</p>
-    }
-
-</section>
-}
-
-<!-- <h2>Product Catalog</h2>
-
-@if (loading()) {
-<p>Loading products...</p>
-}
-
-@if (error()) {
-<p>{{ error() }}</p>
-}
-
-@if (!loading() && !error()) {
-<div class="grid">
-    @for (product of products(); track product.id) {
-    <article class="card">
-        <h3>{{ product.name }}</h3>
-
-        <p>
-            Product ID: {{ product.id }}
-        </p>
-
-        <p class="price">
-            {{ product.price | currency:'INR':'symbol':'1.0-2' }}
-        </p>
-    </article>
-    } @empty {
-    <p>No products found.</p>
-    }
+  <footer class="cart-fab">
+    <button class="fab" routerLink="/cart">
+      🛒 <span *ngIf="cartCount() > 0">{{ cartCount() }}</span>
+    </button>
+  </footer>
 </div>
-} -->

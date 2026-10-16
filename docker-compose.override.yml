@@ -41,6 +41,26 @@ services:
         - action: rebuild
           path: ./backend/services/LearningShop.OrderService/Dockerfile.dev
 
+  cart:
+    volumes:
+      - ./backend/services/LearningShop.CartService:/app/backend/services/LearningShop.CartService:consistent
+    build:
+      context: .
+      dockerfile: backend/services/LearningShop.CartService/Dockerfile.dev
+    entrypoint:
+      - dotnet
+      - watch
+      - run
+      - --no-launch-profile
+      - --project
+      - /app/backend/services/LearningShop.CartService/LearningShop.CartService.csproj
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend/services/LearningShop.CartService/LearningShop.CartService.csproj
+        - action: rebuild
+          path: ./backend/services/LearningShop.CartService/Dockerfile.dev
+
   gateway:
     volumes:
       - ./backend/gateway/LearningShop.Gateway:/app/backend/gateway/LearningShop.Gateway:consistent

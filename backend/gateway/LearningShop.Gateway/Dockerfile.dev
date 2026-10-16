@@ -1,8 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 WORKDIR /src
+COPY backend/shared/LearningShop.MessageBus/LearningShop.MessageBus.csproj backend/shared/LearningShop.MessageBus/
 COPY backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj backend/gateway/LearningShop.Gateway/
 RUN dotnet restore "backend/gateway/LearningShop.Gateway/LearningShop.Gateway.csproj"
+COPY backend/shared/LearningShop.MessageBus/ backend/shared/LearningShop.MessageBus/
 COPY backend/gateway/LearningShop.Gateway/ backend/gateway/LearningShop.Gateway/
 
 WORKDIR /src/backend/gateway/LearningShop.Gateway
