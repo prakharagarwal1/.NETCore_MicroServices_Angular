@@ -15,7 +15,7 @@ export interface OrderItem {
 
 export interface CreateOrderRequest {
   customerName: string;
-  items: OrderLineRequest[];
+  items?: OrderLineRequest[];
 }
 
 export interface OrderLineRequest {

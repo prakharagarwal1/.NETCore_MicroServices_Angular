@@ -1,0 +1,193 @@
+<div class="rxjs-demo-page">
+  <header class="page-header">
+    <h1>🧪 RxJS Operator Demos</h1>
+    <p class="subtitle">
+      Interactive examples of RxJS operators, subjects, and reactive forms.
+    </p>
+  </header>
+
+  <!-- ==================== 1. SEARCH DEMO ==================== -->
+  <section class="demo-card">
+    <h2>1️⃣ Search — debounceTime + distinctUntilChanged + switchMap</h2>
+    <p class="demo-desc">
+      Type to search products. Requests are debounced (400ms), duplicates are
+      dropped, and each new term switches to a new search (canceling previous).
+    </p>
+
+    <form [formGroup]="searchForm" class="search-form">
+      <input
+        type="text"
+        formControlName="term"
+        placeholder="Search products (e.g. mouse, shoe)..."
+        class="search-input"
+      />
+      @if (searchQuery()) {
+        <span class="search-label">Searching for: <strong>{{ searchQuery() }}</strong></span>
+      }
+    </form>
+
+    <div class="search-results">
+      @if (searchLoading()) {
+        <p class="loading">🔍 Searching...</p>
+      } @else if (searchQuery() && searchResults().length === 0) {
+        <p class="empty">No products found.</p>
+      } @else if (searchResults().length > 0) {
+        <ul class="result-list">
+          @for (item of searchResults(); track item.id) {
+            <li class="result-item">
+              <strong>{{ item.name }}</strong>
+              <span class="badge">{{ item.category }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </section>
+
+  <!-- ==================== 2. COUNTER DEMO ==================== -->
+  <section class="demo-card">
+    <h2>2️⃣ Counter — interval + scan + take</h2>
+    <p class="demo-desc">
+      Emits a value every 500ms, accumulates via scan, and stops after 10
+      emissions.
+    </p>
+
+    <div class="counter-display">
+      <span class="counter-value">{{ counter() }}</span>
+    </div>
+
+    <div class="counter-controls">
+      <button
+        (click)="startCounter()"
+        [disabled]="counterRunning()"
+        class="btn btn-primary"
+      >
+        Start Counter
+      </button>
+      <button
+        (click)="resetCounter()"
+        class="btn btn-secondary"
+      >
+        Reset
+      </button>
+    </div>
+
+    @if (counterHistory().length > 0) {
+      <div class="history">
+        <strong>Emissions:</strong>
+        <span class="history-values">
+          @for (v of counterHistory(); track v) {
+            <span class="chip">{{ v }}</span>
+          }
+        </span>
+      </div>
+    }
+  </section>
+
+  <!-- ==================== 3. FORM STREAM DEMO ==================== -->
+  <section class="demo-card">
+    <h2>3️⃣ Reactive Form Stream — combineLatest + map</h2>
+    <p class="demo-desc">
+      Two number inputs are combined with combineLatest and summed in real time
+      using RxJS.
+    </p>
+
+    <form [formGroup]="calcForm" class="calc-form">
+      <div class="form-field">
+        <label>Number A</label>
+        <input type="number" formControlName="a" class="calc-input" />
+      </div>
+      <div class="form-field">
+        <label>Number B</label>
+        <input type="number" formControlName="b" class="calc-input" />
+      </div>
+    </form>
+
+    <div class="calc-result">
+      <strong>Result:</strong>
+      <span class="calc-value">{{ calculationResult() }}</span>
+    </div>
+
+    @if (calculationHistory().length > 0) {
+      <div class="calc-history">
+        <strong>History:</strong>
+        <ul class="history-list">
+          @for (entry of calculationHistory(); track entry) {
+            <li>{{ entry }}</li>
+          }
+        </ul>
+        <button (click)="clearCalcHistory()" class="btn btn-small btn-outline">
+          Clear History
+        </button>
+      </div>
+    }
+  </section>
+
+  <!-- ==================== 4. SUBJECT DEMO ==================== -->
+  <section class="demo-card">
+    <h2>4️⃣ Subjects — BehaviorSubject + multicast clicks</h2>
+    <p class="demo-desc">
+      Clicks are multicast through a Subject. A BehaviorSubject keeps the
+      latest count for late subscribers.
+    </p>
+
+    <div class="subject-stats">
+      <div class="stat">
+        <span class="stat-label">Subject click count:</span>
+        <span class="stat-value">{{ clickCount() }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">BehaviorSubject count:</span>
+        <span class="stat-value">{{ rxjsService.behaviorSubject.value }}</span>
+      </div>
+    </div>
+
+    <button (click)="recordClick()" class="btn btn-primary">
+      Click Me
+    </button>
+    <button
+      (click)="rxjsService.behaviorSubject.next(rxjsService.behaviorSubject.value + 1)"
+      class="btn btn-secondary"
+    >
+      Increment BehaviorSubject
+    </button>
+
+    @if (clickLog().length > 0) {
+      <div class="click-log">
+        <strong>Click log:</strong>
+        <ul class="log-list">
+          @for (entry of clickLog(); track entry) {
+            <li>{{ entry }}</li>
+          }
+        </ul>
+      </div>
+    }
+  </section>
+
+  <!-- ==================== 5. OPERATOR SHOWCASE ==================== -->
+  <section class="demo-card">
+    <h2>5️⃣ Operator Showcase</h2>
+    <p class="demo-desc">
+      Quick demonstrations of common RxJS operators using the
+      <code>RxjsExamplesService</code>.
+    </p>
+
+    <button (click)="runBuiltInDemos()" class="btn btn-primary">
+      Run Operator Demos
+    </button>
+    <button (click)="clearOperatorResults()" class="btn btn-outline">
+      Clear Results
+    </button>
+
+    @if (operatorResults().length > 0) {
+      <div class="operator-grid">
+        @for (item of operatorResults(); track item.name) {
+          <div class="operator-result">
+            <strong>{{ item.name }}</strong>
+            <span>{{ item.result }}</span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

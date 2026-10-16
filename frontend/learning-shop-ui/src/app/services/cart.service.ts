@@ -41,7 +41,7 @@ export class CartService {
   readonly itemCount = signal(0);
 
   getCart(): Observable<Cart> {
-    return this.http.get<Cart>(this apiUrl).pipe(
+    return this.http.get<Cart>(this.apiUrl).pipe(
       tap(cart => {
         this.cart.set(cart);
         this.itemCount.set(cart.itemCount);
@@ -59,7 +59,7 @@ export class CartService {
   }
 
   updateItem(productId: number, quantity: number): Observable<Cart> {
-    return this.http.put<Cart>(`${this apiUrl}/${productId}`, { quantity }).pipe(
+    return this.http.put<Cart>(`${this.apiUrl}/${productId}`, { quantity }).pipe(
       tap(cart => {
         this.cart.set(cart);
         this.itemCount.set(cart.itemCount);
@@ -68,7 +68,7 @@ export class CartService {
   }
 
   removeItem(productId: number): Observable<Cart> {
-    return this.http.delete<Cart>(`${this apiUrl}/${productId}`).pipe(
+    return this.http.delete<Cart>(`${this.apiUrl}/${productId}`).pipe(
       tap(cart => {
         this.cart.set(cart);
         this.itemCount.set(cart.itemCount);
@@ -77,7 +77,7 @@ export class CartService {
   }
 
   clearCart(): Observable<Cart> {
-    return this.http.delete<Cart>(this apiUrl).pipe(
+    return this.http.delete<Cart>(this.apiUrl).pipe(
       tap(cart => {
         this.cart.set(cart);
         this.itemCount.set(0);

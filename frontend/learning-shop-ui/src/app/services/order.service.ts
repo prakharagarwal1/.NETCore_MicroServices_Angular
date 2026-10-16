@@ -12,18 +12,18 @@ export class OrderService {
   private readonly apiUrl = '/api/orders';
 
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this apiUrl);
+    return this.http.get<Order[]>(this.apiUrl);
   }
 
   getOrder(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this apiUrl}/${id}`);
+    return this.http.get<Order>(`${this.apiUrl}/${id}`);
   }
 
   createOrder(request: CreateOrderRequest): Observable<Order> {
-    return this.http.post<Order>(this apiUrl, request);
+    return this.http.post<Order>(this.apiUrl, request);
   }
 
   updateOrderStatus(id: number, request: UpdateOrderStatusRequest): Observable<Order> {
-    return this.http.put<Order>(`${this apiUrl}/${id}/status`, request);
+    return this.http.put<Order>(`${this.apiUrl}/${id}/status`, request);
   }
 }

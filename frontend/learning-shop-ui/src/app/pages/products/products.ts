@@ -1,16 +1,17 @@
-import { COMMON } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
+import { ProductCard } from '../../components/product-card/product-card';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [COMMON, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ProductCard],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })

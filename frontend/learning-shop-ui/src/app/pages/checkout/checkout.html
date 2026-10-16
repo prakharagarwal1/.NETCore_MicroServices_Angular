@@ -1,0 +1,68 @@
+<div class="checkout-page">
+  <header class="page-header">
+    <h1>Checkout</h1>
+    <div class="order-summary">
+      <div *ngIf="cartItemCount() === 0" class="empty-cart">
+        Your cart is empty
+      </div>
+      <div *ngIf="cartItemCount() > 0" class="cart-items">
+        <div *ngFor="let item of cartService.cart()?.items ?? []" class="cart-item">
+          <span>{{ item.productName }}</span>
+          <span>{{ item.quantity }} x ${{ item.unitPrice }}</span>
+          <span>{{ item.lineTotal | currency }}</span>
+        </div>
+        <hr />
+        <div class="cart-total">
+          <strong>Total: ${{ cartTotal | currency }}</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="order-form-section" *ngIf="cartItemCount() > 0">
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="order-form">
+      <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input
+          id="customerName"
+          type="text"
+          formControlName="customerName"
+          placeholder="Enter your name"
+          class="form-control"
+        />
+        @if (mustShowError('customerName')) {
+          <small class="error-text">Name is required (minimum 2 characters)</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="total">Order Total</label>
+        <input
+          id="total"
+          type="number"
+          formControlName="total"
+          placeholder="0.00"
+          class="form-control"
+          [disabled]="true"
+        />
+        @if (mustShowError('total')) {
+          <small class="error-text">Total must be greater than 0</small>
+        }
+      </div>
+
+      <button type="submit" [disabled]="orderForm.invalid || loading()" class="btn-submit">
+        @if (loading()) {
+          Creating order…
+        } @else {
+          Place Order
+        }
+      </button>
+    </form>
+  </section>
+
+  <footer class="cart-fab" *ngIf="cartItemCount() > 0">
+    <button routerLink="/cart">
+      🛒 Cart
+    </button>
+  </footer>
+</div>

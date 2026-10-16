@@ -1,6 +1,6 @@
-import { COMMON } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { CartService } from '../../services/cart.service';
@@ -10,9 +10,8 @@ import { Cart, CartItem } from '../../models/cart';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [COMMON, RouterLink],
-  templateUrl: './cart.html',
-  styleUrl: './cart.scss'
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './cart.html'
 })
 export class CartPage {
   private readonly cartService = inject(CartService);

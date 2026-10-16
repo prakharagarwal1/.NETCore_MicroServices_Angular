@@ -1,0 +1,93 @@
+<div class="cart-page">
+  <header class="page-header">
+    <h1>🛒 Shopping Cart</h1>
+  </header>
+
+  @if (submitSuccess()) {
+    <div class="alert alert-success" role="status">{{ submitSuccess() }}</div>
+  }
+  @if (submitError()) {
+    <div class="alert alert-error" role="alert">{{ submitError() }}</div>
+  }
+
+  @if (!cart() || cart()!.items.length === 0) {
+    <div class="empty-cart">
+      <p>Your cart is empty.</p>
+      <a routerLink="/products" class="btn btn-primary">Browse Products</a>
+    </div>
+  } @else {
+    <div class="cart-summary">
+      <h2>Cart Summary</h2>
+      <p><strong>Total:</strong> {{ total() | currency:'USD':'symbol':'1.0-2' }}</p>
+      <p><strong>Items:</strong> {{ cart()!.itemCount }}</p>
+    </div>
+
+    <div class="cart-items">
+      <h3>Items</h3>
+      @for (item of cart()!.items; track item.productId) {
+        <div class="cart-item">
+          <span>{{ item.productName }}</span>
+          <span>{{ item.unitPrice | currency:'USD':'symbol':'1.0-2' }}</span>
+          <div class="quantity-controls">
+            <button
+              (click)="updateQuantity(item, item.quantity - 1)"
+              class="btn btn-outline btn-small"
+            >
+              −
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button
+              (click)="updateQuantity(item, item.quantity + 1)"
+              class="btn btn-outline btn-small"
+            >
+              +
+            </button>
+          </div>
+          <button
+            (click)="removeItem(item)"
+            class="btn btn-danger btn-small"
+          >
+            Remove
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="checkout-form">
+      <h3>Checkout</h3>
+      <form [formGroup]="checkoutForm" (ngSubmit)="checkout()">
+        <div class="form-field">
+          <label for="customerName">Customer Name <span class="req">*</span></label>
+          <input
+            id="customerName"
+            type="text"
+            formControlName="customerName"
+            placeholder="Enter your name"
+          />
+          @if (
+            checkoutForm.get('customerName')?.touched &&
+            checkoutForm.get('customerName')?.errors
+          ) {
+            <span class="field-error">Customer name is required.</span>
+          }
+        </div>
+        <div class="form-field">
+          <label for="shippingAddress">Shipping Address</label>
+          <input
+            id="shippingAddress"
+            type="text"
+            formControlName="shippingAddress"
+            placeholder="Enter shipping address"
+          />
+        </div>
+        <button
+          type="submit"
+          [disabled]="submitting()"
+          class="btn btn-primary"
+        >
+          {{ submitting() ? 'Placing Order...' : 'Place Order' }}
+        </button>
+      </form>
+    </div>
+  }
+</div>
