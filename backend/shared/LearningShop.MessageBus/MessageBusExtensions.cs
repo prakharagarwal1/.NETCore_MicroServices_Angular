@@ -18,7 +18,7 @@ public static class MessageBusExtensions
     public static void AddMessageBus(
         this IServiceCollection services,
         IConfiguration configuration,
-        Action<IRabbitMqBusFactoryConfigurator>? configureConsumers = null)
+        Action<IRegistrationConfigurator>? configureConsumers = null)
     {
         var rabbitHost = configuration["RabbitMQ:Host"] ?? "localhost";
         var rabbitUser = configuration["RabbitMQ:Username"] ?? "guest";
@@ -35,7 +35,7 @@ public static class MessageBusExtensions
                 });
 
                 // Register any consumers supplied by the host application.
-                configureConsumers?.Invoke(cfg);
+                configureConsumers?.Invoke((IRegistrationConfigurator)(object)cfg);
             });
         });
 

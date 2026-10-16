@@ -1,5 +1,3 @@
-using LearningShop.MessageBus.Models;
-
 namespace LearningShop.MessageBus;
 
 /// <summary>

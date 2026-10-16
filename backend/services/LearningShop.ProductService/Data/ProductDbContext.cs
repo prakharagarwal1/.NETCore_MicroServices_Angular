@@ -4,14 +4,14 @@ namespace LearningShop.ProductService.Data;
 
 public class ProductDbContext : DbContext
 {
-    public ProductDbContext(DbcontextOptions<ProductDbContext> options)
+    public ProductDbContext(DbContextOptions<ProductDbContext> options)
         : base(options)
     {
     }
 
-    public Dbset<Product> Products { get; set; } = null!;
+    public DbSet<Product> Products { get; set; } = null!;
 
-    protected override void OnConfiguring(DbcontextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
@@ -19,9 +19,9 @@ public class ProductDbContext : DbContext
         }
     }
 
-    protected override void OnCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder);
 
         var products = new List<Product>
         {

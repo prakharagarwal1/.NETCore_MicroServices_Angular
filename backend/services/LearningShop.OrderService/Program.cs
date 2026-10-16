@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using LearningShop.MessageBus.Models;
-using MassTransit;
-using LearningShop.MessageBus.Interfaces;
+using LearningShop.MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +38,7 @@ app.Use((context, next) =>
         if (context.Request.Headers.TryGetValue("X-User-Id", out var userId))
             claims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, userId.ToString()!));
         if (context.Request.Headers.TryGetValue("X-User-Email", out var email))
-            claims.Add(new System.Security.Claims.Claim(System.Security.Claims.JwtRegisteredClaimNames.Email, email.ToString()!));
+            claims.Add(new System.Security.Claims.Claim("email", email.ToString()!));
         foreach (var r in roles.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries))
             claims.Add(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, r.Trim()));
 

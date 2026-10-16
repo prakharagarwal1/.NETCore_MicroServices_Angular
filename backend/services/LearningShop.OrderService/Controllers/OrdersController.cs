@@ -2,7 +2,8 @@ using System.Collections.Concurrent;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using LearningShop.MessageBus.Interfaces;
+using LearningShop.MessageBus;
+using LearningShop.MessageBus.Events;
 using LearningShop.MessageBus.Models;
 
 namespace LearningShop.OrderService.Controllers;
